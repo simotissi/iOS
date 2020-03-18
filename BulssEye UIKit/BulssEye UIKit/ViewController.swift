@@ -47,7 +47,7 @@ class ViewController: UIViewController {
         let difference = abs(targetValue-currentValue)
         var points = 100 - difference
         
-        score += points
+        
         
         let title: String
         if difference == 0 {
@@ -61,6 +61,8 @@ class ViewController: UIViewController {
         }else{
             title = "Not even close..."
         }
+        
+        score += points
         
         let message = "The value of the slider is: \(currentValue).\n" + "Your score in this round is: \(points)"
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
