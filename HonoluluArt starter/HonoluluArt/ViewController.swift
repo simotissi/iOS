@@ -86,6 +86,21 @@ class ViewController: UIViewController {
     artworks.append(contentsOf: validWorks)
   }
 
+  
+  let locationManager = CLLocationManager()
+  func checkLocationAuthorizationStatus() {
+    if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+      mapView.showsUserLocation = true
+    } else {
+      locationManager.requestWhenInUseAuthorization()
+    }
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    checkLocationAuthorizationStatus()
+  }
+
 }
 
 // MARK: - MKMapViewDelegate -
