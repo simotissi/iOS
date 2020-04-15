@@ -1,0 +1,9 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+use_frameworks!
+
+target 'MapBoxTest' do
+  pod 'Mapbox-iOS-SDK', '~> 5.0'
+  pod 'MapboxNavigation', '~> 0.39.0'
+end
