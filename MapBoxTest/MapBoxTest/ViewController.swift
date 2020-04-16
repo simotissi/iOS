@@ -11,10 +11,19 @@ import Mapbox
 import MapboxCoreNavigation
 import MapboxNavigation
 import MapboxDirections
+import MapboxGeocoder
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate {
+
     var mapView: NavigationMapView!
     var directionsRoute: Route?
+    var textField: UITextField!
+    var resultsLabel: UILabel!
+    var geocoder: Geocoder!
+    var geocodingDataTask: URLSessionDataTask?
+    var tableView: UITableView = UITableView()
+    var cellCount:Int = 0
+    var addresses:[GeocodedPlacemark] = []
     
     // MARK: - Variables
     var annotation:MGLPointAnnotation?
@@ -22,10 +31,30 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupMap()
+        setupTextField()
+        setupTableView()
+        geocoder = Geocoder.shared
     }
     
+    func setupTableView(){
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.tableFooterView = UIView()
+        tableView.frame = CGRect(x: 10, y: 10, width: 350, height: tableView.contentSize.height)
+        tableView.backgroundColor = .clear
+        tableView.estimatedRowHeight = 44
+        mapView.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        let constraints = [
+            tableView.centerXAnchor.constraint(equalTo: mapView.centerXAnchor),
+            tableView.topAnchor.constraint(equalTo: textField.bottomAnchor),
+            tableView.widthAnchor.constraint(equalToConstant: 350),
+            tableView.heightAnchor.constraint(equalToConstant: 150)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
     func setupMap(){
-        
         mapView = NavigationMapView(frame: view.bounds)
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.addSubview(mapView)
@@ -39,28 +68,73 @@ class ViewController: UIViewController {
         mapView.addGestureRecognizer(longPress)
     }
     
+    func setupTextField(){
+        // TextField Setup
+        textField =  UITextField(frame: CGRect(x: 20, y: 100, width: 350, height: 40))
+        mapView.addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        let constraints = [
+            textField.centerXAnchor.constraint(equalTo: mapView.centerXAnchor),
+            textField.centerYAnchor.constraint(equalTo: mapView.topAnchor, constant: 80 ),
+            textField.widthAnchor.constraint(equalToConstant: 350),
+            textField.heightAnchor.constraint(equalToConstant: 40)
+        ]
+        NSLayoutConstraint.activate(constraints)
+        textField.placeholder = "Enter text here"
+        textField.backgroundColor = UIColor.white
+        textField.delegate = self
+        textField.addTarget(self, action: #selector(self.textFieldDidChange(_:)),
+        for: .editingChanged)
+    }
+    
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        if let text = textField.text, text.count > 4 {
+            let options = ForwardGeocodeOptions(query: text)
+            // To refine the search, you can set various properties on the options object.
+            options.focalLocation = CLLocation(latitude: (mapView.userLocation?.coordinate.latitude)!, longitude: (mapView.userLocation?.coordinate.longitude)!)
+            options.allowedScopes = [.address, .pointOfInterest]
+        
+        
+        geocodingDataTask = geocoder.geocode(options) {
+            (placemarks, attribution, error) in
+            guard let placemark = placemarks else {
+                return
+            }
+            self.addresses = placemark
+            self.cellCount = placemark.count
+            self.tableView.reloadData()
+//            let coordinate = placemark.location?.coordinate
+//            print("\(coordinate?.latitude), \(coordinate?.longitude)")
+//                // 45.270093, -66.050985
+        }
+        }
+    }
+    
     @objc func didLongPress(_ sender: UILongPressGestureRecognizer){
         guard sender.state == .began else { return }
+        let point = sender.location(in: mapView)
         if annotation != nil{
             mapView.removeAnnotations(mapView.annotations!)
         }
+        createAnnotation(point)
+    }
+    
+    func createAnnotation(_ point: CGPoint){
+       // Convert point to map coordinates
         
-        // Convert point to map coordinates
-        let point = sender.location(in: mapView)
-        let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
-        
-        annotation = MGLPointAnnotation()
-        annotation!.coordinate = coordinate
-        annotation!.title = "Start navigation"
-        
-        calculateRoute(from: mapView.userLocation!.coordinate, to: annotation!.coordinate) { (route, error) in
-            if error != nil{
-                print("Error calculating route")
-            }
-            
-        }
-        // Create point annotation and add in the map
-        mapView.addAnnotation(annotation!)
+       let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
+       
+       annotation = MGLPointAnnotation()
+       annotation!.coordinate = coordinate
+       annotation!.title = "Start navigation"
+       
+       calculateRoute(from: mapView.userLocation!.coordinate, to: annotation!.coordinate) { (route, error) in
+           if error != nil{
+               print("Error calculating route")
+           }
+       }
+       // Create point annotation and add in the map
+       mapView.addAnnotation(annotation!)
     }
     
     func calculateRoute(from origin: CLLocationCoordinate2D, to destination: CLLocationCoordinate2D, completion: @escaping(Route?, Error?) -> ()){

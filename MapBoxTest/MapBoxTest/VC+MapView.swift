@@ -9,6 +9,8 @@
 import Foundation
 import Mapbox
 import MapboxNavigation
+import MapboxGeocoder
+
 
 extension ViewController: MGLMapViewDelegate{
     
@@ -20,5 +22,9 @@ extension ViewController: MGLMapViewDelegate{
         let navigationViewController = NavigationViewController(for: directionsRoute!)
         navigationViewController.modalPresentationStyle = .fullScreen
         self.present(navigationViewController, animated: true, completion: nil)
+    }
+    
+    func mapView(_ mapView: MGLMapView, regionWillChangeAnimated animated: Bool) {
+        geocodingDataTask?.cancel()
     }
 }

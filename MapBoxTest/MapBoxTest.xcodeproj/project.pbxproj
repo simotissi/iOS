@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0803F761244856F10036DF74 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0803F760244856F10036DF74 /* Network.swift */; };
 		0820C4F92447477300B9B5FC /* VC+MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0820C4F82447477300B9B5FC /* VC+MapView.swift */; };
+		0861AF8024488B610003C4D4 /* VC+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0861AF7F24488B610003C4D4 /* VC+TableView.swift */; };
 		08856D9C2447054A0079C0F2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08856D9B2447054A0079C0F2 /* AppDelegate.swift */; };
 		08856D9E2447054A0079C0F2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08856D9D2447054A0079C0F2 /* SceneDelegate.swift */; };
 		08856DA02447054A0079C0F2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08856D9F2447054A0079C0F2 /* ViewController.swift */; };
@@ -19,8 +19,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0803F760244856F10036DF74 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		0820C4F82447477300B9B5FC /* VC+MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VC+MapView.swift"; sourceTree = "<group>"; };
+		0861AF7F24488B610003C4D4 /* VC+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VC+TableView.swift"; sourceTree = "<group>"; };
 		08856D982447054A0079C0F2 /* MapBoxTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapBoxTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08856D9B2447054A0079C0F2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		08856D9D2447054A0079C0F2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -69,13 +69,13 @@
 			children = (
 				08856D9B2447054A0079C0F2 /* AppDelegate.swift */,
 				08856D9D2447054A0079C0F2 /* SceneDelegate.swift */,
+				0861AF7F24488B610003C4D4 /* VC+TableView.swift */,
 				0820C4F82447477300B9B5FC /* VC+MapView.swift */,
 				08856D9F2447054A0079C0F2 /* ViewController.swift */,
 				08856DA12447054A0079C0F2 /* Main.storyboard */,
 				08856DA42447054D0079C0F2 /* Assets.xcassets */,
 				08856DA62447054D0079C0F2 /* LaunchScreen.storyboard */,
 				08856DA92447054D0079C0F2 /* Info.plist */,
-				0803F760244856F10036DF74 /* Network.swift */,
 			);
 			path = MapBoxTest;
 			sourceTree = "<group>";
@@ -212,9 +212,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0803F761244856F10036DF74 /* Network.swift in Sources */,
 				0820C4F92447477300B9B5FC /* VC+MapView.swift in Sources */,
 				08856DA02447054A0079C0F2 /* ViewController.swift in Sources */,
+				0861AF8024488B610003C4D4 /* VC+TableView.swift in Sources */,
 				08856D9C2447054A0079C0F2 /* AppDelegate.swift in Sources */,
 				08856D9E2447054A0079C0F2 /* SceneDelegate.swift in Sources */,
 			);
